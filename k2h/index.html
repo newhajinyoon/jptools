@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한자 -> 히라가나 변환</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 300px;
+            height: 100px; /* 여러 줄 입력을 위한 높이 */
+            padding: 10px;
+            margin-right: 10px;
+        }
+        iframe {
+            width: 100%;
+            height: 0; /* 초기 높이를 0으로 설정 */
+            border: 1px solid #ccc;
+            overflow: hidden; /* 스크롤바 숨기기 */
+            transition: height 0.3s ease; /* 높이 변화에 부드러운 애니메이션 추가 */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>일본어 입력 (590자 제한)</h1>
+    <textarea id="japaneseInput" placeholder="일본어를 입력하세요" maxlength="590"></textarea> <!-- maxlength 속성 추가 -->
+    <button onclick="updateIframe()">제출</button>
+
+    <h2>결과:</h2>
+    <iframe id="resultFrame" src="" onload="scrollToPosition()" scrolling="no"></iframe>
+    <h2>결과가 나오면 꼭 "스크롤" 해서 복사하세요!</h2>
+    <script>
+        function updateIframe() {
+            const input = document.getElementById('japaneseInput').value;
+            const iframe = document.getElementById('resultFrame');
+
+            // 입력된 일본어 텍스트로 URL 생성
+            const url = `https://yomikatawa.com/kanji/${encodeURIComponent(input)}#yomikata`; // #yomikata 부분 추가
+            
+            // 글자 수에 따라 iframe 높이 조정
+            const charCount = input.length;
+            const additionalHeight = Math.ceil(charCount / 42) * 30; // 42글자마다 50px 추가
+            iframe.style.height = `${additionalHeight}px`; // iframe 높이 설정
+            
+            // iframe의 src 속성 업데이트
+            iframe.src = url;
+        }
+
+        function scrollToPosition() {
+            const iframe = document.getElementById('resultFrame');
+            const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+            // iframe의 특정 위치로 스크롤 이동
+            iframeDocument.addEventListener("DOMContentLoaded", function() {
+                const scrollElement = iframeDocument.getElementById('yomikata'); // yomikata ID를 가진 요소로 스크롤
+                if (scrollElement) {
+                    scrollElement.scrollIntoView({ behavior: 'smooth' }); // 부드러운 스크롤로 이동
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
