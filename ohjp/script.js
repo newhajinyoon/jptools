@@ -244,8 +244,8 @@ inputArea.addEventListener('input', () => {
 	convertedText = convertedText.replace(/ᅀᅭㅇ/g, 'ᅀᅭᆼ')
 
 	convertedText = convertedText.replace(/𰝁/g, 'ー')
-	convertedText = convertedText.replace(/　/g, '\n')
-	convertedText = convertedText.replace(/ /g, '\n')
+	// convertedText = convertedText.replace(/　/g, '\n')
+	// convertedText = convertedText.replace(/ /g, '\n')
 	outputArea.textContent = Hangul.combine(convertedText);
 
 	
